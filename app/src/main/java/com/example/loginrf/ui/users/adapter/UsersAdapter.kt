@@ -8,21 +8,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.loginrf.data.model.UserResponse
 import com.example.loginrf.databinding.ItemUserBinding
 
-class UsersAdapter : ListAdapter<UserResponse, UsersAdapter.UserViewHolder>(UserDiffCallback()) {
+// In UsersAdapter.kt
+class UsersAdapter(private val onItemClick: (UserResponse) -> Unit) : ListAdapter<UserResponse, UsersAdapter.UserViewHolder>(UserDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserViewHolder(binding)
+        return UserViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class UserViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    class UserViewHolder(
+        private val binding: ItemUserBinding,
+        private val onItemClick: (UserResponse) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserResponse) {
             binding.tvName.text = user.name
             binding.tvEmail.text = user.email
+
+            binding.root.setOnClickListener {
+                onItemClick(user)
+            }
         }
     }
 

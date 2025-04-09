@@ -59,4 +59,20 @@ class ApiRepository(private val context: Context) {
             Result.failure(e)
         }
     }
+
+    suspend fun getUserById(userId: Int): Result<UserResponse> {
+        return try {
+            val response = apiService.getUserById(userId)
+            if (response.isSuccessful) {
+                response.body()?.let { userResponse ->
+                    Result.success(userResponse)
+                } ?: Result.failure(Exception("Empty response"))
+            } else {
+                Result.failure(Exception("Error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

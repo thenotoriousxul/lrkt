@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginrf.databinding.ActivityUsersBinding
 import com.example.loginrf.ui.auth.AuthViewModel
 import com.example.loginrf.ui.users.adapter.UsersAdapter
+import android.content.Intent
+
+
 
 
 class UsersActivity : AppCompatActivity() {
@@ -26,7 +29,12 @@ class UsersActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = UsersAdapter()
+        adapter = UsersAdapter { user ->
+            val intent = Intent(this, UserDetailsActivity::class.java).apply {
+                putExtra(UserDetailsActivity.EXTRA_USER_ID, user.id)
+            }
+            startActivity(intent)
+        }
         binding.recyclerUsers.layoutManager = LinearLayoutManager(this)
         binding.recyclerUsers.adapter = adapter
     }

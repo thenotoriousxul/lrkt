@@ -35,6 +35,10 @@
             android:name=".ui.auth.LoginActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".ui.users.UserDetailsActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

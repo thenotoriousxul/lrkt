@@ -43,4 +43,15 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             _usersResult.postValue(result)
         }
     }
+
+    private val _userResult = MutableLiveData<Result<UserResponse>>()
+    val userResult: LiveData<Result<UserResponse>> get() = _userResult
+
+    fun getUserById(userId: Int) {
+        viewModelScope.launch {
+            val result = repository.getUserById(userId)
+            _userResult.postValue(result)
+        }
+    }
+
 }
