@@ -6,6 +6,7 @@ import com.example.loginrf.data.model.RegisterRequest
 import com.example.loginrf.data.model.RegisterResponse
 import com.example.loginrf.api.RetrofitClient
 import com.example.loginrf.data.SessionManager
+import com.example.loginrf.data.model.UserResponse
 
 
 class ApiRepository(private val context: Context) {
@@ -36,6 +37,21 @@ class ApiRepository(private val context: Context) {
                 response.body()?.let { registerResponse ->
                     Result.success(registerResponse)
                 } ?: Result.failure(Exception("Respuesta vacía"))
+            } else {
+                Result.failure(Exception("Error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getUsers(): Result<List<UserResponse>> {
+        return try {
+            val response = apiService.getUsers()
+            if (response.isSuccessful) {
+                response.body()?.let { wrapper ->
+                    Result.success(wrapper.users)
+                } ?: Result.failure(Exception("Empty response"))
             } else {
                 Result.failure(Exception("Error: ${response.code()}"))
             }

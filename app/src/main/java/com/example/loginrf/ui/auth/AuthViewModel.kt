@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.loginrf.data.model.LoginResponse
 import com.example.loginrf.data.model.RegisterResponse
 import com.example.loginrf.data.repository.ApiRepository
+import com.example.loginrf.data.model.UserResponse
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
 
@@ -30,6 +31,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val result = repository.register(name, email, password)
             _registerResult.postValue(result)
+        }
+    }
+
+    private val _usersResult = MutableLiveData<Result<List<UserResponse>>>()
+    val usersResult: LiveData<Result<List<UserResponse>>> get() = _usersResult
+
+    fun getUsers() {
+        viewModelScope.launch {
+            val result = repository.getUsers()
+            _usersResult.postValue(result)
         }
     }
 }
